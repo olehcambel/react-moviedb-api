@@ -36,7 +36,6 @@ export default (moviesState = defaultState, action) => {
       return moviesState.set('loading', true).set('loaded', false);
 
     case types.MOVIE_LOAD_PER_PAGE + types.SUCCESS:
-      // нужно походу сначала отМаппить респонс, а потом передавать в шифр
       const mapResult = response.results.map(
         ({
           id,
@@ -57,17 +56,11 @@ export default (moviesState = defaultState, action) => {
         })
       );
 
-      return (
-        moviesState
-          .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
-          // .update('entities', entities =>
-          //   arrToMap(mapResult, MoviesRecord).merge(entities)
-          // )
-          // .update('entities', entities => arrToMap())
-          .set('page', response.page)
-          .set('loading', false)
-          .set('loaded', true)
-      );
+      return moviesState
+        .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
+        .set('page', response.page)
+        .set('loading', false)
+        .set('loaded', true);
     // action.payload.page
 
     // action.response.page

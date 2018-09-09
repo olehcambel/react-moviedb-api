@@ -12,7 +12,6 @@ class Movies extends Component {
     // movies, page, loading
     // id, title, overview, posterPath, releaseDate, genreIds, voteAverage
     const { loading, movies, loaded } = this.props;
-    debugger;
     if (loading) return 'loading';
 
     // HANDLE SOMEHOW TO UNDERSTAND IF NO RESULTS OR IT HASNT STARTED YET
@@ -33,17 +32,16 @@ class Movies extends Component {
   }
 
   onInitialLoad = () => {
-    // ???
-    // const { page } = this.props;
-    // if (page === 1) {
-    this.props.movieLoadPerPage(1);
-    // }
+    // ???: first reason for ERROR
+    const { page, loaded } = this.props;
+    if (!page || page !== 1 || !loaded) {
+      this.props.movieLoadPerPage(1);
+    }
   };
 }
 
 const mapStateToProps = state => {
   const { loading, loaded, page } = state.movies;
-
   return {
     movies: moviesSelector(state),
     loading,

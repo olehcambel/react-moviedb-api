@@ -50,15 +50,10 @@ class Search extends Component {
     );
   }
 
-  onChange = () => {
-    debugger;
+  onChange = debounce(() => {
     console.log(this.input.value);
-  };
-
-  // onChange = debounce(() => {
-  //   console.log(this.props);
-  //   console.log(this.inputRef.current.value);
-  // }, 200);
+    debugger;
+  }, 200);
 
   onFocus = () => {
     this.setState({ focused: true });

@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Row, Col } from 'react-styled-flexboxgrid';
 import Flex from 'styled-flex-component';
 import { Title } from './Header';
 import Movie from './Movie';
 
-class MoviesList extends Component {
+class MoviesList extends PureComponent {
   state = {};
 
   render() {

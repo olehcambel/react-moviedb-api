@@ -55,7 +55,6 @@ export default (moviesState = defaultState, action) => {
           voteAverage: vote_average
         })
       );
-
       return moviesState
         .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
         .set('page', response.page)

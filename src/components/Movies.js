@@ -1,33 +1,44 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-styled-flexboxgrid';
 import { movieLoadPerPage } from '../AC';
 import { moviesSelector } from '../selectors';
-import MoviesList from './MoviesList';
+// import MoviesList from './MoviesList';
+import AdvancedMoviesList from './AdvancedMoviesList';
 
-class Movies extends Component {
+class Movies extends PureComponent {
   state = {};
 
   render() {
     // movies, page, loading
     // id, title, overview, posterPath, releaseDate, genreIds, voteAverage
-    const { loading, movies, loaded } = this.props;
-    if (loading) return 'loading';
+    const { loading, movies, loaded, page } = this.props;
+
+    // TEMPORARY. 'D BE BETTER HANDLE
+    if (loading && !movies.length) return 'loading';
 
     // HANDLE SOMEHOW TO UNDERSTAND IF NO RESULTS OR IT HASNT STARTED YET
-    if (!loaded) return null;
+    if (!loaded && !movies.length) return null;
     return (
       <Row style={{ justifyContent: 'center' }}>
         <Col xs={12}>
           <Row>
-            <MoviesList movies={movies} />
+            <AdvancedMoviesList
+              movies={movies}
+              isLoading={loading}
+              page={page}
+              onPaginatedSearch={this.onLazyLoad}
+            />
+            {/* <MoviesList movies={movies} /> */}
           </Row>
+          {/* <Scroll onBottom={this.onLazyLoad} /> */}
         </Col>
       </Row>
     );
   }
 
   componentDidMount() {
+    if (this.props.loaded) return;
     this.onInitialLoad();
   }
 
@@ -37,6 +48,10 @@ class Movies extends Component {
     if (!page || page !== 1 || !loaded) {
       this.props.movieLoadPerPage(1);
     }
+  };
+
+  onLazyLoad = () => {
+    this.props.movieLoadPerPage(this.props.page + 1);
   };
 }
 

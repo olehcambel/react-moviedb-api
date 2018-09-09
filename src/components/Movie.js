@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Flex from 'styled-flex-component';
 import { Col } from 'react-styled-flexboxgrid';
 import GenresList from './GenresList';
@@ -25,7 +25,7 @@ const Column = styled(Col)`
   margin-bottom: 40px;
 `;
 
-class Movie extends Component {
+class Movie extends PureComponent {
   state = {};
 
   render() {

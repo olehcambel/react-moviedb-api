@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Row, Col } from 'react-styled-flexboxgrid';
 import Flex from 'styled-flex-component';
 import Search from './Search';
-import { withRouter } from 'react-router';
+// import { withRouter } from 'react-router';
 
 export const Title = styled.h1`
   opacity: 0.8;

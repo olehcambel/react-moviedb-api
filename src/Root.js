@@ -9,15 +9,15 @@ import theme from './utils/theme';
 import { ThemeProvider } from 'styled-components';
 
 const Root = () => (
-  <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <Global>
+  <ThemeProvider theme={theme}>
+    <Global>
+      <Provider store={store}>
         <Router>
           <App />
         </Router>
-      </Global>
-    </ThemeProvider>
-  </Provider>
+      </Provider>
+    </Global>
+  </ThemeProvider>
 );
 
 export default Root;

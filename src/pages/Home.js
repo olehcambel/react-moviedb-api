@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid } from 'react-styled-flexboxgrid';
 import Navigation from './../components/Navigation';
 import Header from '../components/Header';
+import Movies from '../components/Movies';
 
 export default () => (
   <Grid>
@@ -10,7 +11,7 @@ export default () => (
       <Header />
     </div>
     <main>
-      <h1>Info</h1>
+      <Movies />
     </main>
   </Grid>
 );

@@ -6,7 +6,6 @@ import Home from './pages/Home';
 // import MoviePageList from './MoviePageList';
 import { Route, Switch } from 'react-router-dom';
 import './utils/global-styles';
-require('dotenv').config({ path: './.env' });
 
 export default () => (
   <Switch>
@@ -26,8 +25,5 @@ export default () => (
 
 // query
 // `https://api.themoviedb.org/3/search/movie?api_key=${process.env.API_KEY}&language=en-US&query=wonder&page=1&include_adult=false`
-
-// by id
-// `https://api.themoviedb.org/3/movie/550?api_key=${process.env.API_KEY}`
 
 // process.env.API_KEY

@@ -2,7 +2,7 @@
   "name": "react-redux-cinema",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://react-moviedb-api.github.io",
+  "homepage": "https://olehcambel.github.io/react-moviedb-api",
   "dependencies": {
     "axios": "^0.18.0",
     "gh-pages": "^1.2.0",

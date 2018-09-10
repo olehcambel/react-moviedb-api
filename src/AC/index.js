@@ -10,6 +10,18 @@ const apiKey = process.env.REACT_APP_API_KEY;
 //   };
 // }
 
+export function filterSetDefault() {
+  return { type: types.FILTER_SET_DEFAULT };
+}
+
+export function movieLoadByQuery(page, query) {
+  return {
+    type: types.MOVIE_LOAD_BY_QUERY,
+    callAPI: `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${query}&page=${page}&include_adult=false`,
+    payload: { page, query }
+  };
+}
+
 export function movieLoadPerPage(page) {
   return (dispatch, getState) => {
     const { genres } = getState();
@@ -28,10 +40,3 @@ export function movieLoadPerPage(page) {
     });
   };
 }
-
-// export function genreLoadAll() {
-//   return {
-//     type: types.GENRE_LOAD_ALL,
-//     callAPI: `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`
-//   };
-// }

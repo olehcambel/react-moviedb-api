@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-styled-flexboxgrid';
-import { movieLoadPerPage } from '../AC';
+import { movieLoadPerPage, movieLoadByQuery } from '../AC';
 import { moviesSelector } from '../selectors';
 // import MoviesList from './MoviesList';
 import AdvancedMoviesList from './AdvancedMoviesList';
@@ -12,7 +12,7 @@ class Movies extends PureComponent {
   render() {
     // movies, page, loading
     // id, title, overview, posterPath, releaseDate, genreIds, voteAverage
-    const { loading, movies, loaded, page } = this.props;
+    const { loading, movies, loaded, page, query } = this.props;
 
     // TEMPORARY. 'D BE BETTER HANDLE
     if (loading && !movies.length) return 'loading';
@@ -24,6 +24,7 @@ class Movies extends PureComponent {
         <Col xs={12}>
           <Row>
             <AdvancedMoviesList
+              query={query}
               movies={movies}
               isLoading={loading}
               page={page}
@@ -51,7 +52,8 @@ class Movies extends PureComponent {
   };
 
   onLazyLoad = () => {
-    this.props.movieLoadPerPage(this.props.page + 1);
+    const { page, movieLoadPerPage, movieLoadByQuery, query } = this.props;
+    query ? movieLoadByQuery(page + 1, query) : movieLoadPerPage(page + 1);
   };
 }
 
@@ -61,11 +63,12 @@ const mapStateToProps = state => {
     movies: moviesSelector(state),
     loading,
     loaded,
-    page
+    page,
+    query: state.filters.query
   };
 };
 
 export default connect(
   mapStateToProps,
-  { movieLoadPerPage }
+  { movieLoadPerPage, movieLoadByQuery }
 )(Movies);

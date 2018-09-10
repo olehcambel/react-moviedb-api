@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import debounce from 'lodash.debounce';
+import { movieLoadByQuery, filterSetDefault } from '../AC';
+import { connect } from 'react-redux';
 
 const Wrapper = styled.div`
   display: flex;
@@ -51,9 +53,12 @@ class Search extends Component {
   }
 
   onChange = debounce(() => {
-    console.log(this.input.value);
-    debugger;
-  }, 200);
+    const { value } = this.input;
+    // если нету Валуе, походу все равно нужно экшн вызывать
+    value
+      ? this.props.movieLoadByQuery(1, value)
+      : this.props.filterSetDefault();
+  }, 350);
 
   onFocus = () => {
     this.setState({ focused: true });
@@ -64,4 +69,7 @@ class Search extends Component {
   };
 }
 
-export default Search;
+export default connect(
+  null,
+  { movieLoadByQuery, filterSetDefault }
+)(Search);

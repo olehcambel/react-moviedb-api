@@ -1,6 +1,6 @@
 import * as types from '../constants';
 import { Record, OrderedMap } from 'immutable';
-import { arrToMap } from '../helpers';
+import { arrToMap, mapMovies } from '../helpers';
 
 const MoviesRecord = Record({
   id: undefined,
@@ -13,53 +13,75 @@ const MoviesRecord = Record({
 });
 
 const ReducerState = new Record({
-  // pagination -> page<Int> -> loading, loaded, ids
-  // pagination -> ids, page<Int> -> loading, loaded
-  // pagination: new Map({}),
-  // я не знаю где указать лоадинг,
-  // что конкреная страница грузится, но при этом айдишники в одном месте
-  entities: new OrderedMap({}), // хранятся все фильмы
+  entities: new OrderedMap({}), // хранятся все
+  ids: { idsPopular: [], idsQuery: [] },
   loading: false,
   loaded: false,
-  page: null,
-  total: null
+  page: null
+  // query: ''
 });
+
+// ИДЕЯ: ДОБАВИТЬ СВИТЧЕР, ЕСЛИ УКАЗЫВАТЬ ПОПУЛЯРНЫЕ,
+// то сохраняются данные в первое место
+// ЕСЛИ УКАЗАТЬ ПОИСК,
+// то сначала загружаются по слову, а потом абсолютно все сливается и фильтруется
+// крч в Поиске будет глобальное хранилище, а определенные в Популярные
 
 const defaultState = new ReducerState();
 
 export default (moviesState = defaultState, action) => {
-  const { response } = action;
+  const { response, payload } = action;
+  let mapResult;
 
   switch (action.type) {
     case types.MOVIE_LOAD_PER_PAGE + types.START:
-      // action.payload.page
       return moviesState.set('loading', true).set('loaded', false);
 
     case types.MOVIE_LOAD_PER_PAGE + types.SUCCESS:
-      const mapResult = response.results.map(
-        ({
-          id,
-          title,
-          overview,
-          genre_ids,
-          poster_path,
-          release_date,
-          vote_average
-        }) => ({
-          id,
-          title,
-          overview,
-          genreIds: genre_ids,
-          posterPath: poster_path,
-          releaseDate: release_date,
-          voteAverage: vote_average
-        })
-      );
+      mapResult = mapMovies(response.results);
       return moviesState
         .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
         .set('page', response.page)
         .set('loading', false)
-        .set('loaded', true);
+        .set('loaded', true)
+
+        .set('ids', {
+          ...moviesState.ids,
+          idsPopular: [
+            ...moviesState.ids.idsPopular,
+            ...mapResult.map(r => r.id)
+          ]
+        });
+
+    case types.FILTER_SET_DEFAULT:
+      return moviesState.set('ids', {
+        ...moviesState.ids,
+        idsQuery: []
+      });
+
+    case types.MOVIE_LOAD_BY_QUERY + types.START:
+      debugger;
+      return moviesState
+        .set('loading', true)
+        .set('loaded', false)
+
+        .set('ids', {
+          ...moviesState.ids,
+          idsQuery: payload.page === 1 ? [] : [...moviesState.ids.idsQuery]
+        });
+
+    case types.MOVIE_LOAD_BY_QUERY + types.SUCCESS:
+      mapResult = mapMovies(response.results);
+      debugger;
+      return moviesState
+        .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
+        .set('page', response.page)
+        .set('loading', false)
+        .set('loaded', true)
+        .set('ids', {
+          ...moviesState.ids,
+          idsQuery: [...moviesState.ids.idsQuery, ...mapResult.map(r => r.id)]
+        });
     // action.payload.page
 
     // action.response.page
@@ -86,3 +108,7 @@ export default (moviesState = defaultState, action) => {
       return moviesState;
   }
 };
+
+/**
+ * {hello: [], bye: []}
+ */

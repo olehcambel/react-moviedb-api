@@ -13,7 +13,6 @@ export const moviesSelector = createSelector(
   filtersGetter,
   idsGetter,
   (movies, filters, ids) => {
-    debugger;
     return mapToArr(movies).filter(movie => {
       // Awful filter
       const filtered =

@@ -32,7 +32,11 @@ class Movie extends PureComponent {
     const { id, title, genreIds } = this.props.movie;
     return (
       <Column md={4} sm={6} xs={9}>
-        <Title className="no-hover" to={`/movie/${id}`} title={title}>
+        <Title
+          className="no-hover"
+          to={`${process.env.PUBLIC_URL}/movie/${id}`}
+          title={title}
+        >
           {this.movieTitle(title)}
         </Title>
         <Flex>

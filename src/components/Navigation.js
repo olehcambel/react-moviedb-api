@@ -50,22 +50,22 @@ export default class Navigation extends Component {
     return (
       // <Container>
       <Nav>
-        <LogoWrapper to="/">
+        <LogoWrapper to={process.env.PUBLIC_URL + '/'}>
           <img src={Logo} width="70" alt="Home" />
         </LogoWrapper>
         <List>
           <Item>
-            <Link to="/">
+            <Link to={process.env.PUBLIC_URL + '/'}>
               <span>Movies</span>
             </Link>
           </Item>
           <Item>
-            <Link to="/categories">
+            <Link to={process.env.PUBLIC_URL + '/categories'}>
               <span>Categories</span>
             </Link>
           </Item>
           <Item>
-            <Link to="/favorites">
+            <Link to={process.env.PUBLIC_URL + '/favorites'}>
               <span>Favorites</span>
             </Link>
           </Item>

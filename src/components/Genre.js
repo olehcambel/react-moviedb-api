@@ -4,7 +4,9 @@ import { genreSelectorRepo } from '../selectors';
 import Tag from './styling/Tag';
 
 const Genre = ({ genre }) => (
-  <Tag to={makeLink('category', genre.name)}>#{genre.name.toLowerCase()}</Tag>
+  <Tag to={process.env.PUBLIC_URL + makeLink('category', genre.name)}>
+    #{genre.name.toLowerCase()}
+  </Tag>
 );
 
 const makeLink = (url, name) =>

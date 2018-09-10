@@ -20,14 +20,14 @@ const Wrapper = styled.div`
 
 const Input = styled.input`
     border: none;
-    border-bottom: 1px solid black
-    padding: 5px 5px 5px 35px;
+    border-bottom: 1px solid ${props => props.theme.main}
+    padding: 20px 5px 15px 35px;
     width: 100%;
-    font-size: 40px;
+    font-size: 34px;
     font-weight: 300;
     outline: none;
-    background: white
-    color: black
+    background: ${props => props.theme.darkGrey}
+    color: ${props => props.theme.main}
     @media (max-width: 768px) {
         font-size: 20px;
     }
@@ -38,11 +38,18 @@ class Search extends Component {
 
   render() {
     return (
-      <Wrapper className={this.state.focused ? 'expanded' : ''}>
+      <Wrapper
+        className={
+          this.state.focused || (this.input && this.input.value)
+            ? 'expanded'
+            : ''
+        }
+      >
         <Input
           aria-label="Search"
           onBlur={this.onBlur}
           onChange={this.onChange}
+          onKeyDown={this.onCancel}
           onFocus={this.onFocus}
           innerRef={node => (this.input = node)}
           placeholder="Search"
@@ -66,6 +73,14 @@ class Search extends Component {
 
   onBlur = () => {
     this.setState({ focused: false });
+  };
+
+  onCancel = e => {
+    if (e.nativeEvent.code === 'Escape') {
+      this.input.value = '';
+      this.onBlur();
+      this.onChange();
+    }
   };
 }
 

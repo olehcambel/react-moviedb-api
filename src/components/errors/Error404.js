@@ -45,7 +45,7 @@ export default () => (
     <h1>Error 404</h1>
     <p>Page not found</p>
     <Button>
-      <Link to="/">Back Home</Link>
+      <Link to={process.env.PUBLIC_URL + '/'}>Back Home</Link>
     </Button>
   </Wrapper>
 );

@@ -60,7 +60,6 @@ export default (moviesState = defaultState, action) => {
       });
 
     case types.MOVIE_LOAD_BY_QUERY + types.START:
-      debugger;
       return moviesState
         .set('loading', true)
         .set('loaded', false)
@@ -72,7 +71,6 @@ export default (moviesState = defaultState, action) => {
 
     case types.MOVIE_LOAD_BY_QUERY + types.SUCCESS:
       mapResult = mapMovies(response.results);
-      debugger;
       return moviesState
         .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
         .set('page', response.page)

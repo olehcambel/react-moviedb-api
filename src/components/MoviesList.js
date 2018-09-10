@@ -9,8 +9,6 @@ class MoviesList extends PureComponent {
 
   render() {
     const { movies } = this.props;
-    debugger;
-
     // handle !movies
     return (
       <Col xs={12}>

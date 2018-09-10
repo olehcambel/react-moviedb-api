@@ -10,6 +10,7 @@ import './utils/global-styles';
 export default () => (
   <Switch>
     <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
+
     {/* <Route exact path="/favorites" component={Favorites} />
     <Route exact path="/categories" component={Tags} />
     <Route exact path="/categories/:category" component={Tag} /> */}
@@ -20,7 +21,7 @@ export default () => (
 //   let data = await axios.get(
 //     `https://api.themoviedb.org/3/movie/550?api_key=${process.env.API_KEY}`
 //   );
-//   debugger;
+//   ;
 // }
 
 // query

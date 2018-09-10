@@ -4,11 +4,25 @@ import Flex from 'styled-flex-component';
 import { Col } from 'react-styled-flexboxgrid';
 import GenresList from './GenresList';
 import { Link } from 'react-router-dom';
+import Poster from './Poster';
 
 const Title = styled(Link)`
   font-weight: 700;
-  font-size: 24px;
+  font-size: 23px;
   color: ${props => props.theme.main};
+  line-height: 1 !important;
+  margin-bottom: 10px;
+  margin-top: 0;
+  padding-left: 0;
+  word-break: break-all;
+  border: 0;
+  display: block;
+`;
+
+const Description = styled.div`
+  font-weight: 400;
+  font-size: 16px;
+  color: ${props => props.theme.midGrey};
   line-height: 1 !important;
   margin-bottom: 10px;
   margin-top: 0;
@@ -25,20 +39,49 @@ const Column = styled(Col)`
   margin-bottom: 40px;
 `;
 
+const Amount = styled.span`
+  margin-bottom: 10px;
+  margin-top: -5px;
+  display: block;
+  opacity: 0.8;
+  font-weight: 400;
+  position: relative;
+  right: 10px;
+  top: 15px;
+  color: ${props => props.theme.main};
+`;
+
 class Movie extends PureComponent {
   state = {};
 
   render() {
-    const { id, title, genreIds } = this.props.movie;
+    const {
+      id,
+      title,
+      genreIds,
+      releaseDate,
+      voteAverage,
+      posterPath,
+      overview
+    } = this.props.movie;
     return (
       <Column md={4} sm={6} xs={9}>
+        <Poster path={posterPath} name={title} />
+        <Flex justifyBetween alignCenter>
+          <Amount>{this.getYear(releaseDate)}</Amount>
+          <Amount>
+            Rating: {voteAverage}
+            /10{' '}
+          </Amount>
+        </Flex>
         <Title
           className="no-hover"
           to={`${process.env.PUBLIC_URL}/movie/${id}`}
           title={title}
         >
-          {this.movieTitle(title)}
+          {this.movieSize(title, 50)}
         </Title>
+        <Description>{this.movieSize(overview, 110)}</Description>
         <Flex>
           <GenresList genreIds={genreIds} />
         </Flex>
@@ -46,8 +89,10 @@ class Movie extends PureComponent {
     );
   }
 
-  movieTitle = title =>
-    title.length > 50 ? `${title.substring(0, 50)}..` : title;
+  movieSize = (title, size) =>
+    title.length > size ? `${title.substring(0, size)}..` : title;
+
+  getYear = date => new Date(date).getFullYear();
 }
 
 export default Movie;

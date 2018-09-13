@@ -29,3 +29,16 @@ export const mapMovies = data =>
       voteAverage: vote_average
     })
   );
+
+export const filterBy = (by, ids) => {
+  switch (by) {
+    case 'byPopular':
+      return ids.idsPopular;
+    case 'byQuery':
+      return ids.idsQuery;
+    case 'byFavorite':
+      return ids.idsFavorite;
+    default:
+      return undefined;
+  }
+};

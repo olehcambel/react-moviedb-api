@@ -19,6 +19,7 @@ export default store => next => action => {
       })
     )
     .catch(error => {
-      console.error(error.name);
+      debugger;
+      console.error(error.message);
     });
 };

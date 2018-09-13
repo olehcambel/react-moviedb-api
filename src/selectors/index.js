@@ -1,27 +1,37 @@
 import { createSelector } from 'reselect';
-import { mapToArr } from '../helpers';
+import { mapToArr, filterBy } from '../helpers';
 
 const moviesGetter = state => state.movies.entities;
 const genresGetter = state => state.genres.entities;
-const idsGetter = state => state.movies.ids;
+const filtersGetter = ({ filters }, props) => {
+  // ugly
+  if (filters.query) {
+    return filters.searchBy;
+  }
+  return props.searchBy ? props.searchBy : filters.searchBy;
+};
+const idsGetter = state => state.ids;
 
-const filtersGetter = state => state.filters;
 const idGetter = (_, props) => props.id;
+
+export const genresSelector = createSelector(genresGetter, genres => {
+  return mapToArr(genres);
+});
 
 export const moviesSelector = createSelector(
   moviesGetter,
   filtersGetter,
   idsGetter,
-  (movies, filters, ids) => {
-    return mapToArr(movies).filter(movie => {
-      // Awful filter
-      const filtered =
-        filters.searchBy === 'byPopular'
-          ? ids.idsPopular.includes(movie.id)
-          : ids.idsQuery.includes(movie.id);
+  (movies, searchBy, ids) => {
+    // есть Айдишники, Фильтр и Фильмы
+    // мне нужно отфильтровать фильмы Фильтром исходя из доступных Айдишек
 
-      return filtered;
-    });
+    let arrayToFilter = mapToArr(movies);
+    let currentFilter = filterBy(searchBy, ids);
+    if (!currentFilter.length || !arrayToFilter.length) {
+      return [];
+    }
+    return arrayToFilter.filter(arr => currentFilter.includes(arr.id));
   }
 );
 

@@ -82,12 +82,12 @@ const Wrapper = styled(Row)`
   }
 `;
 
-const Header = ({ title = 'Popular Movies' }) => (
+const Header = ({ title = 'Popular Movies', noSearch }) => (
   <Wrapper>
     <Col xs={12}>
       <SearchWrapper full alignCenter justifyBetween>
         <Title>{title}</Title>
-        <Search />
+        {noSearch ? null : <Search />}
       </SearchWrapper>
     </Col>
   </Wrapper>

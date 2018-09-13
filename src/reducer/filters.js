@@ -36,6 +36,7 @@ export default (filter = defaultFilter, action) => {
         searchBy: 'byQuery',
         query: action.payload.query
       };
+
     default:
       return filter;
   }

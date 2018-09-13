@@ -3,14 +3,17 @@ import React, { PureComponent } from 'react';
 import Flex from 'styled-flex-component';
 import { Col } from 'react-styled-flexboxgrid';
 import GenresList from './GenresList';
+// import Genre from './Genre';
 import { Link } from 'react-router-dom';
 import Poster from './Poster';
+import Favorite from './Favorite';
+import Vote from './styling/Vote';
 
 const Title = styled(Link)`
   font-weight: 700;
   font-size: 23px;
   color: ${props => props.theme.main};
-  line-height: 1 !important;
+  line-height: 1.5 !important;
   margin-bottom: 10px;
   margin-top: 0;
   padding-left: 0;
@@ -46,14 +49,16 @@ const Amount = styled.span`
   opacity: 0.8;
   font-weight: 400;
   position: relative;
-  right: 10px;
   top: 15px;
   color: ${props => props.theme.main};
+
+  &:last-child {
+    right: 10px;
+  }
 `;
 
 class Movie extends PureComponent {
   state = {};
-
   render() {
     const {
       id,
@@ -66,12 +71,16 @@ class Movie extends PureComponent {
     } = this.props.movie;
     return (
       <Column md={4} sm={6} xs={9}>
-        <Poster path={posterPath} name={title} />
+        <Flex justifyCenter>
+          <Poster path={posterPath} name={title} />
+        </Flex>
         <Flex justifyBetween alignCenter>
           <Amount>{this.getYear(releaseDate)}</Amount>
           <Amount>
-            Rating: {voteAverage}
-            /10{' '}
+            <Favorite id={id} />
+          </Amount>
+          <Amount>
+            <Vote small number={voteAverage} max="10" />
           </Amount>
         </Flex>
         <Title
@@ -84,6 +93,7 @@ class Movie extends PureComponent {
         <Description>{this.movieSize(overview, 110)}</Description>
         <Flex>
           <GenresList genreIds={genreIds} />
+          {/* {genreIds.length && genreIds.map(id => <Genre key={id} id={id} />)} */}
         </Flex>
       </Column>
     );

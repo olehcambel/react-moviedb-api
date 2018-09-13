@@ -8,10 +8,10 @@ export default () => (
   <Grid>
     <div>
       <Navigation />
-      <Header />
+      <Header title="Favorites" noSearch />
     </div>
     <main>
-      <Movies searchBy="byPopular" />
+      <Movies searchBy="byFavorite" noLazyLoad />
     </main>
   </Grid>
 );

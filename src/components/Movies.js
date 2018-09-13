@@ -12,7 +12,7 @@ class Movies extends PureComponent {
   render() {
     // movies, page, loading
     // id, title, overview, posterPath, releaseDate, genreIds, voteAverage
-    const { loading, movies, loaded, page, query } = this.props;
+    const { loading, movies, loaded, page, query, noLazyLoad } = this.props;
 
     // TEMPORARY. 'D BE BETTER HANDLE
     if (loading && !movies.length) return 'loading';
@@ -28,7 +28,9 @@ class Movies extends PureComponent {
               movies={movies}
               isLoading={loading}
               page={page}
-              onPaginatedSearch={this.onLazyLoad}
+              onPaginatedSearch={() =>
+                noLazyLoad ? undefined : this.onLazyLoad()
+              }
             />
             {/* <MoviesList movies={movies} /> */}
           </Row>
@@ -45,26 +47,36 @@ class Movies extends PureComponent {
 
   onInitialLoad = () => {
     // ???: first reason for ERROR
-    const { page, loaded } = this.props;
+    const { page, loaded, searchBy, movieLoadPerPage } = this.props;
     if (!page || page !== 1 || !loaded) {
-      this.props.movieLoadPerPage(1);
+      movieLoadPerPage(1, searchBy);
     }
   };
 
   onLazyLoad = () => {
-    const { page, movieLoadPerPage, movieLoadByQuery, query } = this.props;
-    query ? movieLoadByQuery(page + 1, query) : movieLoadPerPage(page + 1);
+    // BUG. when no left results. it just infinity times trying to fetch data
+    const {
+      page,
+      movieLoadPerPage,
+      movieLoadByQuery,
+      query,
+      searchBy
+    } = this.props;
+    query
+      ? movieLoadByQuery(page + 1, query)
+      : movieLoadPerPage(page + 1, searchBy);
   };
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   const { loading, loaded, page } = state.movies;
   return {
-    movies: moviesSelector(state),
+    movies: moviesSelector(state, ownProps),
     loading,
     loaded,
     page,
-    query: state.filters.query
+    query: state.filters.query,
+    searchBy: ownProps.searchBy ? ownProps.searchBy : state.filters.searchBy
   };
 };
 

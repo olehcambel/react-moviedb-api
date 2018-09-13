@@ -1,6 +1,7 @@
 import * as types from '../constants';
 import { Record, OrderedMap } from 'immutable';
 import { arrToMap, mapMovies } from '../helpers';
+import { loadState } from '../localStorage';
 
 const MoviesRecord = Record({
   id: undefined,
@@ -12,9 +13,11 @@ const MoviesRecord = Record({
   voteAverage: 0
 });
 
+const locale = loadState();
 const ReducerState = new Record({
-  entities: new OrderedMap({}), // хранятся все
-  ids: { idsPopular: [], idsQuery: [] },
+  entities: new OrderedMap(
+    !locale || !locale.movies ? {} : arrToMap(locale.favorites, MoviesRecord)
+  ), // хранятся все
   loading: false,
   loaded: false,
   page: null
@@ -24,10 +27,10 @@ const ReducerState = new Record({
 const defaultState = new ReducerState();
 
 export default (moviesState = defaultState, action) => {
-  const { response, payload } = action;
+  const { response, type } = action;
   let mapResult;
 
-  switch (action.type) {
+  switch (type) {
     case types.MOVIE_LOAD_PER_PAGE + types.START:
       return moviesState.set('loading', true).set('loaded', false);
 
@@ -37,31 +40,10 @@ export default (moviesState = defaultState, action) => {
         .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
         .set('page', response.page)
         .set('loading', false)
-        .set('loaded', true)
-
-        .set('ids', {
-          ...moviesState.ids,
-          idsPopular: [
-            ...moviesState.ids.idsPopular,
-            ...mapResult.map(r => r.id)
-          ]
-        });
-
-    case types.FILTER_SET_DEFAULT:
-      return moviesState.set('ids', {
-        ...moviesState.ids,
-        idsQuery: []
-      });
+        .set('loaded', true);
 
     case types.MOVIE_LOAD_BY_QUERY + types.START:
-      return moviesState
-        .set('loading', true)
-        .set('loaded', false)
-
-        .set('ids', {
-          ...moviesState.ids,
-          idsQuery: payload.page === 1 ? [] : [...moviesState.ids.idsQuery]
-        });
+      return moviesState.set('loading', true).set('loaded', false);
 
     case types.MOVIE_LOAD_BY_QUERY + types.SUCCESS:
       mapResult = mapMovies(response.results);
@@ -69,11 +51,8 @@ export default (moviesState = defaultState, action) => {
         .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
         .set('page', response.page)
         .set('loading', false)
-        .set('loaded', true)
-        .set('ids', {
-          ...moviesState.ids,
-          idsQuery: [...moviesState.ids.idsQuery, ...mapResult.map(r => r.id)]
-        });
+        .set('loaded', true);
+
     // action.payload.page
 
     // action.response.page

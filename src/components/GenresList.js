@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 // import { genreLoadAll } from '../AC';
 import Genre from './Genre';
 
+//what the goal to pass GenresList ????
+
 const GenresList = ({ loading, loaded, genreIds }) => {
+  debugger;
   if (loading) return 'loading genres';
   if (!loaded) return null;
   return (

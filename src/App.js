@@ -3,17 +3,23 @@ import React from 'react';
 // import Header from './Header';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
+import Favorites from './pages/Favorites';
 // import MoviePageList from './MoviePageList';
 import { Route, Switch } from 'react-router-dom';
+import Tags from './components/Tags';
 import './utils/global-styles';
 
 export default () => (
   <Switch>
     <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
 
-    {/* <Route exact path="/favorites" component={Favorites} />
+    <Route
+      exact
+      path={process.env.PUBLIC_URL + '/favorites'}
+      component={Favorites}
+    />
     <Route exact path="/categories" component={Tags} />
-    <Route exact path="/categories/:category" component={Tag} /> */}
+    {/* <Route exact path="/categories/:category" component={Tag} /> */}
     <Route component={NotFound} />
   </Switch>
 );

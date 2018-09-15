@@ -3,6 +3,9 @@ import { mapToArr, filterBy } from '../helpers';
 
 const moviesGetter = state => state.movies.entities;
 const genresGetter = state => state.genres.entities;
+const idsStateGetter = state => state.ids;
+const propsGetter = (_, props) => props;
+
 const filtersGetter = ({ filters }, props) => {
   // ugly
   if (filters.query) {
@@ -10,18 +13,11 @@ const filtersGetter = ({ filters }, props) => {
   }
   return props.searchBy ? props.searchBy : filters.searchBy;
 };
-const idsGetter = state => state.ids;
-
-const idGetter = (_, props) => props.id;
-
-export const genresSelector = createSelector(genresGetter, genres => {
-  return mapToArr(genres);
-});
 
 export const moviesSelector = createSelector(
   moviesGetter,
   filtersGetter,
-  idsGetter,
+  idsStateGetter,
   (movies, searchBy, ids) => {
     // есть Айдишники, Фильтр и Фильмы
     // мне нужно отфильтровать фильмы Фильтром исходя из доступных Айдишек
@@ -35,5 +31,22 @@ export const moviesSelector = createSelector(
   }
 );
 
-export const genreSelectorRepo = () =>
-  createSelector(genresGetter, idGetter, (genres, id) => genres.get(id));
+export const genresSelector = createSelector(
+  genresGetter,
+  propsGetter,
+  (genres, { ids, all }) => {
+    let mappedGenres = mapToArr(genres);
+    if (!mappedGenres.length) {
+      return [];
+    }
+    return mappedGenres.filter(arr => (all ? arr : ids.includes(arr.id)));
+  }
+);
+
+// export const genreSelectorRepo = () => {
+//   debugger;
+//   return createSelector(genresGetter, idGetter, (genres, genreIds) => {
+//     debugger;
+//     return genres.get(genreIds);
+//   });
+// };

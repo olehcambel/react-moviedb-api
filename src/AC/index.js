@@ -5,18 +5,6 @@ const apiKey = process.env.REACT_APP_API_KEY;
 // get movies by genre
 // https://api.themoviedb.org/3/genre/28/movies?page=1&api_key=apiKey&language=en-US
 
-export function filterSetDefault() {
-  return { type: types.FILTER_SET_DEFAULT };
-}
-
-export function movieLoadByQuery(page, query) {
-  return {
-    type: types.MOVIE_LOAD_BY_QUERY,
-    callAPI: `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}&api_key=${apiKey}&language=en-US`,
-    payload: { page, query }
-  };
-}
-
 export const movieLoadPerPage = (page, type, id) => (dispatch, getState) => {
   if (type === 'byPopular') {
     dispatch({
@@ -28,6 +16,19 @@ export const movieLoadPerPage = (page, type, id) => (dispatch, getState) => {
   dispatch(genreLoadAll());
 };
 
+export const movieLoadByQuery = (page, query) => ({
+  type: types.MOVIE_LOAD_BY_QUERY,
+  callAPI: `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}&api_key=${apiKey}&language=en-US`,
+  payload: { page, query }
+});
+
+export function movieLoadByGenre() {
+  debugger;
+  return {
+    type: types.MOVIE_LOAD_BY_GENRE
+  };
+}
+
 export const genreLoadAll = () => (dispatch, getState) => {
   const { genres } = getState();
   if (genres.loading || genres.loaded) return;
@@ -37,15 +38,21 @@ export const genreLoadAll = () => (dispatch, getState) => {
   });
 };
 
+export const filterSetDefault = () => ({
+  type: types.FILTER_SET_DEFAULT
+});
+
 export const favoriteAdd = id => ({
   type: types.FAVORITE_ADD,
   payload: { id }
 });
+
 export const favoriteRemove = id => ({
   type: types.FAVORITE_REMOVE,
   payload: { id }
 });
 
+//Firebase
 // export const favoriteAdd = id => async dispatch => {
 //   debugger;
 //   favoritesRef.push().set(id);
@@ -63,12 +70,3 @@ export const favoriteRemove = id => ({
 //     });
 //   });
 // };
-
-// export function movieLoadPerPage(page) {
-//   return {
-//     type: types.MOVIE_LOAD_PER_PAGE,
-//     callAPI: `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=${page}`,
-//     //походу не нужен пейлоад ??
-//     payload: { page }
-//   };
-// }

@@ -21,5 +21,9 @@ export default store => next => action => {
     .catch(error => {
       debugger;
       console.error(error.message);
+      next({
+        type: type + types.FAIL,
+        response: error
+      });
     });
 };

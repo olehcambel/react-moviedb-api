@@ -22,8 +22,8 @@ const ReducerState = new Record({
   ), // хранятся все
   loading: false,
   loaded: false,
-  page: null
-  // query: ''
+  page: null,
+  error: null
 });
 
 const defaultState = new ReducerState();
@@ -42,6 +42,13 @@ export default (moviesState = defaultState, action) => {
         .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
         .set('page', response.page)
         .set('loading', false)
+        .set('loaded', true)
+        .set('error', null);
+
+    case types.MOVIE_LOAD_PER_PAGE + types.FAIL:
+      return moviesState
+        .set('error', response.message)
+        .set('loading', false)
         .set('loaded', true);
 
     case types.MOVIE_LOAD_BY_QUERY + types.START:
@@ -52,6 +59,13 @@ export default (moviesState = defaultState, action) => {
       return moviesState
         .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
         .set('page', response.page)
+        .set('loading', false)
+        .set('loaded', true)
+        .set('error', null);
+
+    case types.MOVIE_LOAD_BY_QUERY + types.FAIL:
+      return moviesState
+        .set('error', response.message)
         .set('loading', false)
         .set('loaded', true);
 

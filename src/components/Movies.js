@@ -10,21 +10,28 @@ class Movies extends PureComponent {
   state = {};
 
   render() {
-    // movies, page, loading
-    // id, title, overview, posterPath, releaseDate, genreIds, voteAverage
-    const { loading, movies, loaded, page, query, noLazyLoad } = this.props;
+    const {
+      loading,
+      movies,
+      loaded,
+      page,
+      query,
+      noLazyLoad,
+      error
+    } = this.props;
 
     // TEMPORARY. 'D BE BETTER HANDLE
     if (loading && !movies.length) return 'loading';
-
     // HANDLE SOMEHOW TO UNDERSTAND IF NO RESULTS OR IT HASNT STARTED YET
     if (!loaded && !movies.length) return null;
+
     return (
       <Row style={{ justifyContent: 'center' }}>
         <Col xs={12}>
           <Row>
             <AdvancedMoviesList
               query={query}
+              isError={error}
               movies={movies}
               isLoading={loading}
               page={page}
@@ -69,12 +76,13 @@ class Movies extends PureComponent {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { loading, loaded, page } = state.movies;
+  const { loading, loaded, page, error } = state.movies;
   return {
     movies: moviesSelector(state, ownProps),
     loading,
     loaded,
     page,
+    error,
     query: state.filters.query,
     searchBy: ownProps.searchBy ? ownProps.searchBy : state.filters.searchBy
   };

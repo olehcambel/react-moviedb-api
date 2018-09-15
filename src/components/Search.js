@@ -38,7 +38,6 @@ class Search extends Component {
 
   render() {
     return (
-      
       <Wrapper
         className={
           this.state.focused || (this.input && this.input.value)
@@ -62,7 +61,6 @@ class Search extends Component {
 
   onChange = debounce(() => {
     const { value } = this.input;
-    // если нету Валуе, походу все равно нужно экшн вызывать
     value
       ? this.props.movieLoadByQuery(1, value)
       : this.props.filterSetDefault();

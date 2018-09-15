@@ -20,7 +20,7 @@ const withPaginated = conditionFn => Component => props => (
     <div className="interactions">
       {conditionFn(props) && (
         <div>
-          <div>Something went wrong...</div>
+          <div>{props.isError}</div>
           <button type="button" onClick={props.onPaginatedSearch}>
             Try Again
           </button>

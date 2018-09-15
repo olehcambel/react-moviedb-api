@@ -1,5 +1,4 @@
 import React from 'react';
-// import axios from 'axios';
 // import Header from './Header';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
@@ -12,7 +11,6 @@ import './utils/global-styles';
 export default () => (
   <Switch>
     <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
-
     <Route
       exact
       path={process.env.PUBLIC_URL + '/favorites'}

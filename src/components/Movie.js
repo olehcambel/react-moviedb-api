@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 import Flex from 'styled-flex-component';
 import { Col } from 'react-styled-flexboxgrid';
 import GenresList from './GenresList';
-// import Genre from './Genre';
 import { Link } from 'react-router-dom';
 import Poster from './Poster';
 import Favorite from './Favorite';
@@ -92,8 +91,7 @@ class Movie extends PureComponent {
         </Title>
         <Description>{this.movieSize(overview, 110)}</Description>
         <Flex>
-          <GenresList genreIds={genreIds} />
-          {/* {genreIds.length && genreIds.map(id => <Genre key={id} id={id} />)} */}
+          <GenresList ids={genreIds} />
         </Flex>
       </Column>
     );
@@ -102,7 +100,11 @@ class Movie extends PureComponent {
   movieSize = (title, size) =>
     title.length > size ? `${title.substring(0, size)}..` : title;
 
-  getYear = date => new Date(date).getFullYear();
+  getYear = date =>
+    new Date(date).toLocaleDateString('en', {
+      month: 'long',
+      year: 'numeric'
+    });
 }
 
 export default Movie;

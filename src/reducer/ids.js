@@ -7,7 +7,7 @@ const locale = loadState();
 const ReducerState = new Record({
   idsPopular: [],
   idsQuery: [],
-  idsFavorite: !locale || !locale.ids ? [] : locale.idsFavorite
+  idsFavorite: !locale || !locale.ids ? [] : locale.ids.idsFavorite
 });
 
 const defaultState = new ReducerState();

@@ -16,7 +16,9 @@ const MoviesRecord = Record({
 const locale = loadState();
 const ReducerState = new Record({
   entities: new OrderedMap(
-    !locale || !locale.movies ? {} : arrToMap(locale.favorites, MoviesRecord)
+    !locale || !locale.movies
+      ? {}
+      : arrToMap(locale.movies.favorites, MoviesRecord)
   ), // хранятся все
   loading: false,
   loaded: false,

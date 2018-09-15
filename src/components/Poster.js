@@ -10,7 +10,7 @@ const Thumbnail = styled.img`
 
 const Poster = ({ path, name }) => {
   return (
-    <Thumbnail src={`http://image.tmdb.org/t/p/w300/${path}`} alt={name} />
+    <Thumbnail src={`https://image.tmdb.org/t/p/w300/${path}`} alt={name} />
   );
 };
 

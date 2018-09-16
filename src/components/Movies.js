@@ -10,20 +10,12 @@ class Movies extends PureComponent {
   state = {};
 
   render() {
-    const {
-      loading,
-      movies,
-      loaded,
-      page,
-      query,
-      noLazyLoad,
-      error
-    } = this.props;
+    const { loading, movies, page, query, noLazyLoad, error } = this.props;
 
     // TEMPORARY. 'D BE BETTER HANDLE
     if (loading && !movies.length) return 'loading';
     // HANDLE SOMEHOW TO UNDERSTAND IF NO RESULTS OR IT HASNT STARTED YET
-    if (!loaded && !movies.length) return null;
+    if (!movies.length) return null;
 
     return (
       <Row style={{ justifyContent: 'center' }}>
@@ -48,43 +40,49 @@ class Movies extends PureComponent {
   }
 
   componentDidMount() {
-    if (this.props.loaded) return;
-    this.onInitialLoad();
+    const { movies, page } = this.props;
+    debugger;
+    if (!movies.length && (!page || page === 1)) this.onInitialLoad();
+  }
+
+  componentDidUpdate(prev) {
+    const { loading, id } = this.props;
+    if (!loading && prev.id !== id) {
+      this.onInitialLoad();
+    }
   }
 
   onInitialLoad = () => {
-    // ???: first reason for ERROR
-    const { page, loaded, searchBy, movieLoadPerPage } = this.props;
-    if (!page || page !== 1 || !loaded) {
-      movieLoadPerPage(1, searchBy);
-    }
+    const { searchBy, movieLoadPerPage, id } = this.props;
+    movieLoadPerPage(1, searchBy, id);
   };
 
   onLazyLoad = () => {
-    // BUG. when no left results. it just infinity times trying to fetch data
     const {
       page,
       movieLoadPerPage,
       movieLoadByQuery,
       query,
-      searchBy
+      searchBy,
+      id
     } = this.props;
     query
       ? movieLoadByQuery(page + 1, query)
-      : movieLoadPerPage(page + 1, searchBy);
+      : movieLoadPerPage(page + 1, searchBy, id);
   };
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { loading, loaded, page, error } = state.movies;
+  const { loading, page, error } = state.movies;
   return {
     movies: moviesSelector(state, ownProps),
     loading,
-    loaded,
+
     page,
     error,
     query: state.filters.query,
-    searchBy: ownProps.searchBy ? ownProps.searchBy : state.filters.searchBy
+    searchBy: ownProps.searchBy ? ownProps.searchBy : state.filters.searchBy,
+    id: ownProps.id
   };
 };
 

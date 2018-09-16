@@ -1,11 +1,10 @@
 import React from 'react';
-// import Header from './Header';
-import NotFound from './pages/NotFound';
+import { Route, Switch } from 'react-router-dom';
 import Home from './pages/Home';
 import Favorites from './pages/Favorites';
-// import MoviePageList from './MoviePageList';
-import { Route, Switch } from 'react-router-dom';
 import Tags from './components/Tags';
+import Category from './pages/Category';
+import NotFound from './pages/NotFound';
 import './utils/global-styles';
 
 export default () => (
@@ -21,7 +20,11 @@ export default () => (
       path={process.env.PUBLIC_URL + '/categories'}
       component={Tags}
     />
-    {/* <Route exact path="/categories/:category" component={Tag} /> */}
+    <Route
+      exact
+      path={process.env.PUBLIC_URL + '/category/:genre'}
+      component={Category}
+    />
     <Route component={NotFound} />
   </Switch>
 );

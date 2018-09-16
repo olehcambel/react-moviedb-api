@@ -37,6 +37,12 @@ export default (filter = defaultFilter, action) => {
         query: action.payload.query
       };
 
+    case types.MOVIE_LOAD_BY_GENRE + types.START:
+      return {
+        ...filter,
+        searchBy: 'byGenre'
+      };
+
     default:
       return filter;
   }

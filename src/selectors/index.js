@@ -24,7 +24,7 @@ export const moviesSelector = createSelector(
 
     let arrayToFilter = mapToArr(movies);
     let currentFilter = filterBy(searchBy, ids);
-    if (!currentFilter.length || !arrayToFilter.length) {
+    if (!currentFilter || !arrayToFilter) {
       return [];
     }
     return arrayToFilter.filter(arr => currentFilter.includes(arr.id));

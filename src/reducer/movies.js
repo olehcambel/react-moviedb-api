@@ -69,6 +69,18 @@ export default (moviesState = defaultState, action) => {
         .set('loading', false)
         .set('loaded', true);
 
+    case types.MOVIE_LOAD_BY_GENRE + types.START:
+      return moviesState.set('loading', true).set('loaded', false);
+
+    case types.MOVIE_LOAD_BY_GENRE + types.SUCCESS:
+      mapResult = mapMovies(response.results);
+      return moviesState
+        .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
+        .set('page', response.page)
+        .set('loading', false)
+        .set('loaded', true)
+        .set('error', null);
+
     // action.payload.page
 
     // action.response.page

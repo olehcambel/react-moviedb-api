@@ -5,11 +5,19 @@ const apiKey = process.env.REACT_APP_API_KEY;
 // get movies by genre
 // https://api.themoviedb.org/3/genre/28/movies?page=1&api_key=apiKey&language=en-US
 
-export const movieLoadPerPage = (page, type, id) => (dispatch, getState) => {
+export const movieLoadPerPage = (page, type, id) => dispatch => {
   if (type === 'byPopular') {
     dispatch({
       type: types.MOVIE_LOAD_PER_PAGE,
       callAPI: `https://api.themoviedb.org/3/movie/popular?page=${page}&api_key=${apiKey}&language=en-US`
+    });
+  }
+
+  if (type === 'byGenre') {
+    dispatch({
+      type: types.MOVIE_LOAD_BY_GENRE,
+      callAPI: `https://api.themoviedb.org/3/genre/${id}/movies?page=${page}&api_key=${apiKey}&language=en-US`,
+      payload: { page, id }
     });
   }
 
@@ -21,13 +29,6 @@ export const movieLoadByQuery = (page, query) => ({
   callAPI: `https://api.themoviedb.org/3/search/movie?query=${query}&page=${page}&api_key=${apiKey}&language=en-US`,
   payload: { page, query }
 });
-
-export function movieLoadByGenre() {
-  debugger;
-  return {
-    type: types.MOVIE_LOAD_BY_GENRE
-  };
-}
 
 export const genreLoadAll = () => (dispatch, getState) => {
   const { genres } = getState();

@@ -38,6 +38,8 @@ export const filterBy = (by, ids) => {
       return ids.idsQuery;
     case 'byFavorite':
       return ids.idsFavorite;
+    case 'byGenre':
+      return ids.idsGenre;
     default:
       return undefined;
   }

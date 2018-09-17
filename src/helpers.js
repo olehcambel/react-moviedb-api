@@ -15,20 +15,55 @@ export const mapMovies = data =>
       id,
       title,
       overview,
+      backdrop_path,
       genre_ids,
-      poster_path,
       release_date,
-      vote_average
+      vote_average,
+      vote_count,
+      runtime
     }) => ({
       id,
       title,
       overview,
       genreIds: genre_ids,
-      posterPath: poster_path,
+      backdropPath: backdrop_path,
       releaseDate: release_date,
-      voteAverage: vote_average
+      voteAverage: vote_average,
+      voteCount: vote_count,
+      runtime
     })
   );
+
+export const objMovie = ({
+  id,
+  title,
+  overview,
+  backdrop_path,
+  release_date,
+  vote_average,
+  vote_count,
+  runtime,
+  poster_path,
+  genres,
+  status,
+  tagline,
+  videos
+}) => ({
+  id,
+  title,
+  overview,
+  releaseDate: release_date,
+  backdropPath: backdrop_path,
+  genreIds: genres.map(genre => genre.id),
+  voteAverage: vote_average,
+  voteCount: vote_count,
+  runtime,
+  posterPath: poster_path,
+  genres,
+  status,
+  tagline,
+  trailer: videos.results[0] || { key: undefined, name: undefined }
+});
 
 export const filterBy = (by, ids) => {
   switch (by) {

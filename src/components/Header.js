@@ -20,6 +20,14 @@ export const Title = styled.h1`
   margin-bottom: 0;
   text-transform: capitalize;
 
+  ${is('medium')`
+    font-size: 55px;
+
+    @media (max-width: 768px) {
+        margin-bottom: 48px;
+    }
+  `};
+
   ${is('small')`
     font-size: 24px;
     color: ${props => props.theme.red};
@@ -28,7 +36,7 @@ export const Title = styled.h1`
     @media (max-width: 768px) {
       margin-bottom: 48px;
     }
-`};
+  `};
 
   @media (max-width: 1199px) {
     font-size: 45px;
@@ -76,17 +84,27 @@ const SearchWrapper = styled(Flex)`
 const Wrapper = styled(Row)`
   margin-bottom: 60px;
 
+  ${is('small')`
+    margin-bottom: 40px;
+  `};
+
+  ${is('medium')`
+    margin-bottom: 40px;
+  `};
+
   @media (max-width: 768px) {
     margin: auto;
     margin-bottom: 20px;
   }
 `;
 
-const Header = ({ title = 'Popular Movies', noSearch }) => (
-  <Wrapper>
+const Header = ({ title = 'Popular Movies', noSearch, small, medium }) => (
+  <Wrapper small={small} medium={medium}>
     <Col xs={12}>
       <SearchWrapper full alignCenter justifyBetween>
-        <Title>{title}</Title>
+        <Title small={small} medium={medium}>
+          {title}
+        </Title>
         {noSearch ? null : <Search />}
       </SearchWrapper>
     </Col>

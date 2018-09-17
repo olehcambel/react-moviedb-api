@@ -56,22 +56,23 @@ const Amount = styled.span`
   }
 `;
 
-class Movie extends PureComponent {
+class MoviePreview extends PureComponent {
   state = {};
   render() {
     const {
       id,
       title,
+      overview,
+      backdropPath,
       genreIds,
       releaseDate,
       voteAverage,
-      posterPath,
-      overview
+      voteCount,
     } = this.props.movie;
     return (
       <Column md={4} sm={6} xs={9}>
         <Flex justifyCenter>
-          <Poster path={posterPath} name={title} />
+          <Poster path={backdropPath} name={title} />
         </Flex>
         <Flex justifyBetween alignCenter>
           <Amount>{this.getYear(releaseDate)}</Amount>
@@ -79,7 +80,7 @@ class Movie extends PureComponent {
             <Favorite id={id} />
           </Amount>
           <Amount>
-            <Vote small number={voteAverage} max="10" />
+            <Vote small number={voteAverage} max="10" />({voteCount})
           </Amount>
         </Flex>
         <Title
@@ -107,4 +108,4 @@ class Movie extends PureComponent {
     });
 }
 
-export default Movie;
+export default MoviePreview;

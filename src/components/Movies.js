@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Row, Col } from 'react-styled-flexboxgrid';
 import { movieLoadPerPage, movieLoadByQuery } from '../AC';
 import { moviesSelector } from '../selectors';
-// import MoviesList from './MoviesList';
 import AdvancedMoviesList from './AdvancedMoviesList';
 
 class Movies extends PureComponent {
@@ -31,9 +30,7 @@ class Movies extends PureComponent {
                 noLazyLoad ? undefined : this.onLazyLoad()
               }
             />
-            {/* <MoviesList movies={movies} /> */}
           </Row>
-          {/* <Scroll onBottom={this.onLazyLoad} /> */}
         </Col>
       </Row>
     );
@@ -41,7 +38,6 @@ class Movies extends PureComponent {
 
   componentDidMount() {
     const { movies, page } = this.props;
-    debugger;
     if (!movies.length && (!page || page === 1)) this.onInitialLoad();
   }
 

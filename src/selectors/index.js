@@ -31,6 +31,14 @@ export const moviesSelector = createSelector(
   }
 );
 
+export const movieSelector = createSelector(
+  moviesGetter,
+  propsGetter,
+  (movies, { id }) => {
+    return movies.get(Number(id));
+  }
+);
+
 export const genresSelector = createSelector(
   genresGetter,
   propsGetter,

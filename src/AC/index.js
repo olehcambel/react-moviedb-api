@@ -30,6 +30,12 @@ export const movieLoadByQuery = (page, query) => ({
   payload: { page, query }
 });
 
+export const movieLoadById = id => ({
+  type: types.MOVIE_LOAD_BY_ID,
+  callAPI: `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&append_to_response=videos&language=en-US`,
+  payload: { id }
+});
+
 export const genreLoadAll = () => (dispatch, getState) => {
   const { genres } = getState();
   if (genres.loading || genres.loaded) return;

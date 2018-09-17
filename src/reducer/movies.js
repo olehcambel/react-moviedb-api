@@ -1,16 +1,24 @@
 import * as types from '../constants';
 import { Record, OrderedMap } from 'immutable';
-import { arrToMap, mapMovies } from '../helpers';
+import { arrToMap, mapMovies, objMovie } from '../helpers';
 import { loadState } from '../localStorage';
 
 const MoviesRecord = Record({
-  id: undefined,
-  title: undefined,
-  overview: undefined,
+  id: null,
+  title: null,
+  overview: null,
+  backdropPath: null,
   genreIds: [],
-  posterPath: undefined,
-  releaseDate: undefined,
-  voteAverage: 0
+  releaseDate: null,
+  voteAverage: 0,
+  voteCount: 0,
+  runtime: 0,
+
+  posterPath: null,
+  genres: [],
+  status: null,
+  tagline: null,
+  trailer: {}
 });
 
 const locale = loadState();
@@ -21,7 +29,6 @@ const ReducerState = new Record({
       : arrToMap(locale.movies.favorites, MoviesRecord)
   ), // хранятся все
   loading: false,
-  loaded: false,
   page: null,
   error: null
 });
@@ -34,7 +41,7 @@ export default (moviesState = defaultState, action) => {
 
   switch (type) {
     case types.MOVIE_LOAD_PER_PAGE + types.START:
-      return moviesState.set('loading', true).set('loaded', false);
+      return moviesState.set('loading', true);
 
     case types.MOVIE_LOAD_PER_PAGE + types.SUCCESS:
       mapResult = mapMovies(response.results);
@@ -42,17 +49,13 @@ export default (moviesState = defaultState, action) => {
         .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
         .set('page', response.page)
         .set('loading', false)
-        .set('loaded', true)
         .set('error', null);
 
     case types.MOVIE_LOAD_PER_PAGE + types.FAIL:
-      return moviesState
-        .set('error', response.message)
-        .set('loading', false)
-        .set('loaded', true);
+      return moviesState.set('error', response.message).set('loading', false);
 
     case types.MOVIE_LOAD_BY_QUERY + types.START:
-      return moviesState.set('loading', true).set('loaded', false);
+      return moviesState.set('loading', true);
 
     case types.MOVIE_LOAD_BY_QUERY + types.SUCCESS:
       mapResult = mapMovies(response.results);
@@ -60,17 +63,13 @@ export default (moviesState = defaultState, action) => {
         .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
         .set('page', response.page)
         .set('loading', false)
-        .set('loaded', true)
         .set('error', null);
 
     case types.MOVIE_LOAD_BY_QUERY + types.FAIL:
-      return moviesState
-        .set('error', response.message)
-        .set('loading', false)
-        .set('loaded', true);
+      return moviesState.set('error', response.message).set('loading', false);
 
     case types.MOVIE_LOAD_BY_GENRE + types.START:
-      return moviesState.set('loading', true).set('loaded', false);
+      return moviesState.set('loading', true);
 
     case types.MOVIE_LOAD_BY_GENRE + types.SUCCESS:
       mapResult = mapMovies(response.results);
@@ -78,8 +77,32 @@ export default (moviesState = defaultState, action) => {
         .mergeIn(['entities'], arrToMap(mapResult, MoviesRecord))
         .set('page', response.page)
         .set('loading', false)
-        .set('loaded', true)
         .set('error', null);
+
+    case types.MOVIE_LOAD_BY_ID + types.START:
+      return moviesState.set('loading', true);
+
+    case types.MOVIE_LOAD_BY_ID + types.SUCCESS:
+      let objResult = objMovie(response);
+
+      //ПЕРЕЗАПИСЫВАЕТ, А ДОЛЖНО ПРОСТО ОБНОВЛЯТЬ null
+      return moviesState
+        .setIn(['entities', response.id], new MoviesRecord(objResult))
+        .set('loading', false);
+
+    // id: null,
+    // title: null,
+    // overview: null,
+    // genreIds: [],
+    // posterPath: null,
+    // releaseDate: null,
+    // voteAverage: 0,
+    // voteCount: 0,
+
+    // backdropPath: null,
+    // genres: [],
+    // status: null,
+    // tagline: null
 
     // action.payload.page
 
